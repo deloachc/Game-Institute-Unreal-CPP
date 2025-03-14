@@ -23,6 +23,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void PrintHelloWorldToLog();
+
 	// Variables declared in the header file can be accessed from any function within the class
 	int32 ClassInteger = 0;
 

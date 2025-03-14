@@ -23,8 +23,8 @@ void AHelloWorldActor::BeginPlay()
 	3 + 3;
 	
 	ClassInteger = (3 + 3) * 4;
-	
-	UE_LOG(LogTemp, Warning, TEXT("Hello World"));
+
+	PrintHelloWorldToLog();
 }
 
 // Called every frame
@@ -34,3 +34,7 @@ void AHelloWorldActor::Tick(float DeltaTime)
 
 }
 
+void AHelloWorldActor::PrintHelloWorldToLog()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Hello World"));
+}
