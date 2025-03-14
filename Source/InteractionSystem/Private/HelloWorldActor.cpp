@@ -15,11 +15,16 @@ AHelloWorldActor::AHelloWorldActor()
 void AHelloWorldActor::BeginPlay()
 {
 	Super::BeginPlay();
-
+	
 	ClassInteger = 1;
+
+	ClassInteger;
+	
+	3 + 3;
+	
+	ClassInteger = (3 + 3) * 4;
 	
 	UE_LOG(LogTemp, Warning, TEXT("Hello World"));
-	
 }
 
 // Called every frame
