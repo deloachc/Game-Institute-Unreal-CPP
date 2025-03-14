@@ -16,6 +16,8 @@ void AHelloWorldActor::BeginPlay()
 {
 	Super::BeginPlay();
 
+	ClassInteger = 1;
+	
 	UE_LOG(LogTemp, Warning, TEXT("Hello World"));
 	
 }
