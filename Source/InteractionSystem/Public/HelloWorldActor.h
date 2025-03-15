@@ -25,7 +25,13 @@ public:
 
 	void PrintHelloWorldToLog();
 
+	int32 AddTwoIntegers(int32 A, int32 B);
+
 	// Variables declared in the header file can be accessed from any function within the class
 	int32 ClassInteger = 0;
+
+	int32 GetClassInteger();
+
+	void SetClassInteger(int32 NewValue);
 
 };

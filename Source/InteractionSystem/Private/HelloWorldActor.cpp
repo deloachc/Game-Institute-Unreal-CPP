@@ -16,13 +16,9 @@ void AHelloWorldActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	ClassInteger = 1;
+	SetClassInteger(1);
 
-	ClassInteger;
-	
-	3 + 3;
-	
-	ClassInteger = (3 + 3) * 4;
+	SetClassInteger(AddTwoIntegers(3, 3) * 4);
 
 	PrintHelloWorldToLog();
 }
@@ -37,4 +33,19 @@ void AHelloWorldActor::Tick(float DeltaTime)
 void AHelloWorldActor::PrintHelloWorldToLog()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Hello World"));
+}
+
+int32 AHelloWorldActor::AddTwoIntegers(int32 A, int32 B)
+{
+	return A + B;
+}
+
+int32 AHelloWorldActor::GetClassInteger()
+{
+	return ClassInteger;
+}
+
+void AHelloWorldActor::SetClassInteger(int32 NewValue)
+{
+	ClassInteger = NewValue;
 }
