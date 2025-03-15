@@ -17,10 +17,11 @@ void AHelloWorldActor::BeginPlay()
 	Super::BeginPlay();
 	
 	SetClassInteger(1);
-
+	
 	SetClassInteger(AddTwoIntegers(3, 3) * 4);
 
 	PrintHelloWorldToLog();
+
 }
 
 // Called every frame
