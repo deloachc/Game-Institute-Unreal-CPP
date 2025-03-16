@@ -30,10 +30,17 @@ public:
 
 	void CompareTwoFloats(float A, float B);
 	
-	// Variables declared in the header file can be accessed from any function within the class
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 ClassInteger = 2;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bClassBool = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ClassFloatA = 2.5f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float ClassFloatB = 5.f;
 
 	void CompareClassIntegerToInput(int32 Input);
 

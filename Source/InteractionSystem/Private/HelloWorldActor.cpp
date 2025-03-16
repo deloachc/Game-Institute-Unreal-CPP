@@ -16,10 +16,7 @@ void AHelloWorldActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	CompareTwoFloats(1.2f, 2.5f);
-	CompareTwoFloats(3.5f, 2.2f);
-	CompareTwoFloats(1.1f, 1.1f);
-
+	CompareTwoFloats(ClassFloatA, ClassFloatB);
 }
 
 // Called every frame
