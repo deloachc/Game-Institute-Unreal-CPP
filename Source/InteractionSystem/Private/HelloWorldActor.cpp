@@ -16,11 +16,21 @@ void AHelloWorldActor::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	SetClassInteger(1);
+	if (bClassBool)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ClassBool is true"));
+	}
 	
-	SetClassInteger(AddTwoIntegers(3, 3) * 4);
+	if (!bClassBool)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ClassBool is false"));
+	}
 
-	PrintHelloWorldToLog();
+	int32 LocalInteger = 4;
+
+	float LocalFloat = 1.2f;
+
+	UE_LOG(LogTemp, Warning, TEXT("ClassInteger: %i, LocalFloat: %f, LocalInteger: %i"), ClassInteger, LocalFloat, LocalInteger);
 
 }
 
@@ -39,6 +49,19 @@ void AHelloWorldActor::PrintHelloWorldToLog()
 int32 AHelloWorldActor::AddTwoIntegers(int32 A, int32 B)
 {
 	return A + B;
+}
+
+void AHelloWorldActor::CompareClassIntegerToInput(int32 Input)
+{
+	if (ClassInteger == Input)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ClassInteger is equal to Input"));
+	}
+
+	if (ClassInteger != Input)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("ClassInteger is not equal to Input"));
+	}
 }
 
 int32 AHelloWorldActor::GetClassInteger()

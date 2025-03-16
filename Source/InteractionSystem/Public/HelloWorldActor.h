@@ -29,9 +29,11 @@ public:
 	int32 AddTwoIntegers(int32 A, int32 B);
 	
 	// Variables declared in the header file can be accessed from any function within the class
-	int32 ClassInteger = 0;
+	int32 ClassInteger = 2;
 
-	bool bClassBool = true;
+	bool bClassBool = false;
+
+	void CompareClassIntegerToInput(int32 Input);
 
 	int32 GetClassInteger();
 
