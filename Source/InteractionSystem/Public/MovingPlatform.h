@@ -18,6 +18,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	void MovePlatform(float DeltaTime);
 
 public:	
 	// Called every frame
@@ -26,4 +27,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Mesh;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector Velocity = FVector(200.f, 0.f, 0.f);
 };

@@ -17,15 +17,27 @@ AMovingPlatform::AMovingPlatform()
 void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
-
-	UE_LOG(LogTemp, Warning, TEXT("Mesh Address: %p"), Mesh);
 	
+}
+
+void AMovingPlatform::MovePlatform(float DeltaTime)
+{
+	// Get the current location of the actor
+	FVector StartLocation = GetActorLocation();
+	// Multiply the velocity vector by DeltaTime
+	FVector DeltaLocation = Velocity * DeltaTime;
+	// Add the delta vector to our actor's location to get a new location
+	FVector NewLocation = StartLocation + DeltaLocation;
+	// Set Actor Location to that new location
+	SetActorLocation(NewLocation);
 }
 
 // Called every frame
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	MovePlatform(DeltaTime);
 
 }
 
