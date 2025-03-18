@@ -17,6 +17,24 @@ void AHelloWorldActor::BeginPlay()
 	Super::BeginPlay();
 	
 	CompareTwoFloats(ClassFloatA, ClassFloatB);
+
+	ClassVector.X = 2.f;
+	ClassVector.Y = 3.f;
+	ClassVector.Z = 10.f;
+
+	float VectorLength = ClassVector.Length();
+	FVector Normal = ClassVector.GetSafeNormal();
+
+	FVector A = FVector(1.f, 1.f, 1.f);
+	FVector B = FVector(3.f);
+	
+	float Distance = FVector::Distance(A, B);
+
+	ClassRotator.Pitch = 45.f;
+
+	FString DebugString = FString("Debug String");
+
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, DebugString);
 }
 
 // Called every frame
@@ -40,14 +58,20 @@ void AHelloWorldActor::CompareTwoFloats(float A, float B)
 {
 	if (A > B)
 	{
+		FString DebugString = FString::SanitizeFloat(A) + FString(" is greater than ") + FString::SanitizeFloat(B);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugString);
 		UE_LOG(LogTemp, Warning, TEXT("%f is greater than %f"), A, B);
 	}
 	else if (A < B)
 	{
+		FString DebugString = FString::SanitizeFloat(A) + FString(" is less than ") + FString::SanitizeFloat(B);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugString);
 		UE_LOG(LogTemp, Warning, TEXT("%f is less than %f"), A, B);
 	}
 	else
 	{
+		FString DebugString = FString::SanitizeFloat(A) + FString(" is equal to ") + FString::SanitizeFloat(B);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, DebugString);
 		UE_LOG(LogTemp, Warning, TEXT("%f is equal to %f"), A, B);
 	}
 }
