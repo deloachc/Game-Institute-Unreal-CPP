@@ -24,8 +24,20 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void StartMovePlatformTimeline();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USceneComponent* EndLocationComponent;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
+	FVector StartLocation = FVector::ZeroVector;
+
+	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
+	FVector EndLocation = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FVector Velocity = FVector(200.f, 0.f, 0.f);

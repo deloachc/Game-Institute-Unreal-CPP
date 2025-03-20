@@ -11,17 +11,25 @@ AMovingPlatform::AMovingPlatform()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
+
+	EndLocationComponent = CreateDefaultSubobject<USceneComponent>(TEXT("EndLocationComponent"));
+	EndLocationComponent->SetupAttachment(GetRootComponent());
 }
 
 // Called when the game starts or when spawned
 void AMovingPlatform::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	StartLocation = GetActorLocation();
+	EndLocation = EndLocationComponent->GetComponentLocation();
+
+	StartMovePlatformTimeline();
 }
 
 void AMovingPlatform::MovePlatform(float DeltaTime)
 {
+	/*
 	// Get the current location of the actor
 	FVector StartLocation = GetActorLocation();
 	// Multiply the velocity vector by DeltaTime
@@ -30,14 +38,13 @@ void AMovingPlatform::MovePlatform(float DeltaTime)
 	FVector NewLocation = StartLocation + DeltaLocation;
 	// Set Actor Location to that new location
 	SetActorLocation(NewLocation);
+	*/
+	
 }
 
 // Called every frame
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	MovePlatform(DeltaTime);
-
 }
 
