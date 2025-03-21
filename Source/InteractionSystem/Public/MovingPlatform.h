@@ -18,7 +18,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void MovePlatform(float DeltaTime);
 
 public:	
 	// Called every frame
@@ -27,18 +26,25 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartMovePlatformTimeline();
 
+	UFUNCTION(BlueprintCallable)
+	float GetScaledPlayRate();
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Mesh;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	USceneComponent* EndLocationComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UStaticMeshComponent* EndLocationEditorMesh;
 
+	// cm/second
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	float Speed = 100.f;
+	
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
 	FVector StartLocation = FVector::ZeroVector;
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
 	FVector EndLocation = FVector::ZeroVector;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector Velocity = FVector(200.f, 0.f, 0.f);
 };

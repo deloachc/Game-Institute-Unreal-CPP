@@ -14,6 +14,11 @@ AMovingPlatform::AMovingPlatform()
 
 	EndLocationComponent = CreateDefaultSubobject<USceneComponent>(TEXT("EndLocationComponent"));
 	EndLocationComponent->SetupAttachment(GetRootComponent());
+	
+	EndLocationEditorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("EndLocationEditorMesh"));
+	EndLocationEditorMesh->SetupAttachment(EndLocationComponent);
+	EndLocationEditorMesh->SetHiddenInGame(true);
+	EndLocationEditorMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 }
 
 // Called when the game starts or when spawned
@@ -27,24 +32,17 @@ void AMovingPlatform::BeginPlay()
 	StartMovePlatformTimeline();
 }
 
-void AMovingPlatform::MovePlatform(float DeltaTime)
-{
-	/*
-	// Get the current location of the actor
-	FVector StartLocation = GetActorLocation();
-	// Multiply the velocity vector by DeltaTime
-	FVector DeltaLocation = Velocity * DeltaTime;
-	// Add the delta vector to our actor's location to get a new location
-	FVector NewLocation = StartLocation + DeltaLocation;
-	// Set Actor Location to that new location
-	SetActorLocation(NewLocation);
-	*/
-	
-}
-
 // Called every frame
 void AMovingPlatform::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+}
+
+float AMovingPlatform::GetScaledPlayRate()
+{
+	float Distance = FVector::Distance(StartLocation, EndLocation);
+	float Time = Distance / Speed;
+	float PlayRate = 1.f / Time;
+	return PlayRate;
 }
 
