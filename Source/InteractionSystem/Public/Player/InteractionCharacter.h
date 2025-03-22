@@ -6,6 +6,9 @@
 #include "GameFramework/Character.h"
 #include "InteractionCharacter.generated.h"
 
+class UCameraComponent;
+class USpringArmComponent;
+
 UCLASS()
 class INTERACTIONSYSTEM_API AInteractionCharacter : public ACharacter
 {
@@ -26,4 +29,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	USpringArmComponent* SpringArm;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UCameraComponent* Camera;
 };
