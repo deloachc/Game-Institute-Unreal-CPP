@@ -5,6 +5,8 @@
 
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "EnhancedInputComponent.h"
 
 // Sets default values
 AInteractionCharacter::AInteractionCharacter()
@@ -25,7 +27,10 @@ AInteractionCharacter::AInteractionCharacter()
 void AInteractionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
+	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	UEnhancedInputLocalPlayerSubsystem* Subsystem = PlayerController->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+	Subsystem->AddMappingContext(DefaultMappingContext, 0);
 }
 
 // Called every frame
@@ -40,5 +45,12 @@ void AInteractionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
+	EnhancedInput->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AInteractionCharacter::Interact);
+
 }
 
+void AInteractionCharacter::Interact()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString("Interact triggered"));
+}
