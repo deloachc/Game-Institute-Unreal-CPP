@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InteractionCharacter.generated.h"
 
+struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
 class UInputMappingContext;
@@ -44,4 +45,9 @@ public:
 	UInputAction* InteractAction;
 
 	void Interact();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInputAction* LookAction;
+	
+	void Look(const FInputActionValue& Value);
 };

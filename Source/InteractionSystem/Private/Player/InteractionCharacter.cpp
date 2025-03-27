@@ -28,7 +28,7 @@ void AInteractionCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
-	APlayerController* PlayerController = Cast<APlayerController>(Controller);
+	const APlayerController* PlayerController = Cast<APlayerController>(Controller);
 	UEnhancedInputLocalPlayerSubsystem* Subsystem = PlayerController->GetLocalPlayer()->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
 	Subsystem->AddMappingContext(DefaultMappingContext, 0);
 }
@@ -47,10 +47,18 @@ void AInteractionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	EnhancedInput->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AInteractionCharacter::Interact);
-
+	EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, this, &AInteractionCharacter::Look);
 }
 
 void AInteractionCharacter::Interact()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString("Interact triggered"));
+}
+
+void AInteractionCharacter::Look(const FInputActionValue& Value)
+{
+	const FVector2D LookInput = Value.Get<FVector2D>();
+	
+	AddControllerPitchInput(LookInput.Y);
+	AddControllerYawInput(LookInput.X);
 }
