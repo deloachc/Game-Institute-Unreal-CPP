@@ -24,7 +24,7 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-
+	
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
@@ -50,4 +50,9 @@ public:
 	UInputAction* LookAction;
 	
 	void Look(const FInputActionValue& Value);
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInputAction* MoveAction;
+
+	void Move(const FInputActionValue& Value);
 };

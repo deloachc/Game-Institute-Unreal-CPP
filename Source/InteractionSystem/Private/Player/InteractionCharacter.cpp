@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
 AInteractionCharacter::AInteractionCharacter()
@@ -20,7 +21,12 @@ AInteractionCharacter::AInteractionCharacter()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
-	
+
+	bUseControllerRotationYaw = false;
+	bUseControllerRotationPitch = false;
+	bUseControllerRotationRoll = false;
+
+	GetCharacterMovement()->bOrientRotationToMovement = true;
 }
 
 // Called when the game starts or when spawned
@@ -48,6 +54,7 @@ void AInteractionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 	UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent);
 	EnhancedInput->BindAction(InteractAction, ETriggerEvent::Triggered, this, &AInteractionCharacter::Interact);
 	EnhancedInput->BindAction(LookAction, ETriggerEvent::Triggered, this, &AInteractionCharacter::Look);
+	EnhancedInput->BindAction(MoveAction, ETriggerEvent::Triggered, this, &AInteractionCharacter::Move);
 }
 
 void AInteractionCharacter::Interact()
@@ -61,4 +68,22 @@ void AInteractionCharacter::Look(const FInputActionValue& Value)
 	
 	AddControllerPitchInput(LookInput.Y);
 	AddControllerYawInput(LookInput.X);
+}
+
+void AInteractionCharacter::Move(const FInputActionValue& Value)
+{
+	// Get a Vector2D from the Value input
+	const FVector2D MoveInput = Value.Get<FVector2D>();
+	
+	// Find our controller's rotation and isolate the Yaw (left to right rotation)
+	const FRotator ControlRotation = GetControlRotation();
+	const FRotator YawRotation = FRotator(0.f, ControlRotation.Yaw, 0.f);
+	
+	// Get the forward and right vectors from the Yaw rotation
+	const FVector ForwardDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::X);
+	const FVector RightDirection = FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y);
+	
+	// Add movement input in the forward and right directions based on our X and Y input values
+	AddMovementInput(ForwardDirection, MoveInput.X);
+	AddMovementInput(RightDirection, MoveInput.Y);
 }
