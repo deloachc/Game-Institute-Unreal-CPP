@@ -8,6 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 // Sets default values
 AInteractionCharacter::AInteractionCharacter()
@@ -59,7 +60,31 @@ void AInteractionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AInteractionCharacter::Interact()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString("Interact triggered"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString("Interact triggered"));
+
+	const FVector Start = GetActorLocation() + FVector(0.f, 0.f, 75.f);
+	const FVector End = Start + (GetActorForwardVector() * 150.f);
+	ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
+	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
+	EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::Type::ForDuration;
+	FHitResult Hit;
+	
+	bool bTraceHit = UKismetSystemLibrary::LineTraceSingle(
+		this,
+		Start,
+		End,
+		TraceChannel,
+		false,
+		ActorsToIgnore,
+		DrawDebugType,
+		Hit,
+		true);
+
+	if (bTraceHit)
+	{
+		FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
+	}
 }
 
 void AInteractionCharacter::Look(const FInputActionValue& Value)
