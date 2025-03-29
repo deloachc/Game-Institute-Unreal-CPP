@@ -34,7 +34,20 @@ void AHelloWorldActor::BeginPlay()
 
 	FString DebugString = FString("Debug String");
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, DebugString);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, DebugString);
+
+	TArray<FColor> Colors;
+	Colors.Emplace(FColor::Red);
+	FColor Red = Colors[0];
+	Colors.Emplace(FColor::Green);
+	FColor Green = Colors[1];
+	Colors.Emplace(FColor::Blue);
+	
+	for (int32 i = 0; i < Colors.Num(); i++)
+	{
+		FColor Color = Colors[i];
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, Color, FString::FromInt(i));
+	}
 }
 
 // Called every frame

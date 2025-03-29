@@ -68,7 +68,7 @@ void AInteractionCharacter::Interact()
 	ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
 	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
 	EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::Type::ForDuration;
-	FHitResult Hit;
+	TArray<FHitResult> TraceHits;
 	
 	/*bool bTraceHit = UKismetSystemLibrary::LineTraceSingle(
 		this,
@@ -81,7 +81,7 @@ void AInteractionCharacter::Interact()
 		Hit,
 		true);*/
 
-	UKismetSystemLibrary::CapsuleTraceSingle(
+	UKismetSystemLibrary::CapsuleTraceMulti(
 		this,
 		Start,
 		End,
@@ -91,11 +91,13 @@ void AInteractionCharacter::Interact()
 		false,
 		ActorsToIgnore,
 		DrawDebugType,
-		Hit,
+		TraceHits,
 		true
 		);
+
 	
-	if (Hit.bBlockingHit)
+	
+	/*if (TraceHits.bBlockingHit)
 	{
 		FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
@@ -104,7 +106,7 @@ void AInteractionCharacter::Interact()
 		{
 			MovingPlatform->StartMovePlatformTimeline();
 		}
-	}
+	}*/
 }
 
 void AInteractionCharacter::Look(const FInputActionValue& Value)
