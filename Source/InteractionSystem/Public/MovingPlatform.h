@@ -25,6 +25,8 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartMovePlatformTimeline();
+
+protected:
 	
 	UFUNCTION(BlueprintCallable)
 	float GetScaledPlayRate();

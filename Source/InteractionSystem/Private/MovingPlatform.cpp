@@ -28,8 +28,6 @@ void AMovingPlatform::BeginPlay()
 
 	StartLocation = GetActorLocation();
 	EndLocation = EndLocationComponent->GetComponentLocation();
-
-	StartMovePlatformTimeline();
 }
 
 // Called every frame

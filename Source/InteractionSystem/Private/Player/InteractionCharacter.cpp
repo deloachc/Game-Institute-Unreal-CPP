@@ -63,10 +63,8 @@ void AInteractionCharacter::Interact()
 {
 	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString("Interact triggered"));
 
-	const FVector Start = GetActorLocation() + (GetActorForwardVector() * Start);
-	const FVector End = Start + (GetActorForwardVector() * 50.f);
-	const float Radius = 50.f;
-	const float HalfHeight = 90.f;
+	const FVector Start = GetActorLocation() + (GetActorForwardVector() * TraceStartOffset);
+	const FVector End = Start + (GetActorForwardVector() * TraceEndOffset);
 	ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
 	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
 	EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::Type::ForDuration;
@@ -87,8 +85,8 @@ void AInteractionCharacter::Interact()
 		this,
 		Start,
 		End,
-		Radius,
-		HalfHeight,
+		TraceRadius,
+		TraceHalfHeight,
 		TraceChannel,
 		false,
 		ActorsToIgnore,
@@ -101,6 +99,11 @@ void AInteractionCharacter::Interact()
 	{
 		FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
+
+		if (AMovingPlatform* MovingPlatform = Cast<AMovingPlatform>(Hit.GetActor()))
+		{
+			MovingPlatform->StartMovePlatformTimeline();
+		}
 	}
 }
 
