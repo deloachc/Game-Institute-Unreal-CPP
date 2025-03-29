@@ -25,10 +25,10 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartMovePlatformTimeline();
-
+	
 	UFUNCTION(BlueprintCallable)
 	float GetScaledPlayRate();
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Mesh;
 
@@ -37,7 +37,7 @@ public:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* EndLocationEditorMesh;
-
+	
 	// cm/second
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	float Speed = 100.f;

@@ -7,6 +7,7 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
+#include "MovingPlatform.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -62,14 +63,16 @@ void AInteractionCharacter::Interact()
 {
 	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString("Interact triggered"));
 
-	const FVector Start = GetActorLocation() + FVector(0.f, 0.f, 75.f);
-	const FVector End = Start + (GetActorForwardVector() * 150.f);
+	const FVector Start = GetActorLocation() + (GetActorForwardVector() * Start);
+	const FVector End = Start + (GetActorForwardVector() * 50.f);
+	const float Radius = 50.f;
+	const float HalfHeight = 90.f;
 	ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
 	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
 	EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::Type::ForDuration;
 	FHitResult Hit;
 	
-	bool bTraceHit = UKismetSystemLibrary::LineTraceSingle(
+	/*bool bTraceHit = UKismetSystemLibrary::LineTraceSingle(
 		this,
 		Start,
 		End,
@@ -78,9 +81,23 @@ void AInteractionCharacter::Interact()
 		ActorsToIgnore,
 		DrawDebugType,
 		Hit,
-		true);
+		true);*/
 
-	if (bTraceHit)
+	UKismetSystemLibrary::CapsuleTraceSingle(
+		this,
+		Start,
+		End,
+		Radius,
+		HalfHeight,
+		TraceChannel,
+		false,
+		ActorsToIgnore,
+		DrawDebugType,
+		Hit,
+		true
+		);
+	
+	if (Hit.bBlockingHit)
 	{
 		FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
