@@ -91,9 +91,9 @@ void AInteractionCharacter::Interact()
 			FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
 
-			if (AMovingPlatform* MovingPlatform = Cast<AMovingPlatform>(Hit.GetActor()))
+			if (IInteractionInterface* InteractableObject = Cast<IInteractionInterface>(Hit.GetActor()))
 			{
-				MovingPlatform->StartMovePlatformTimeline();
+				InteractableObject->InteractWith();
 			}
 		}
 	}

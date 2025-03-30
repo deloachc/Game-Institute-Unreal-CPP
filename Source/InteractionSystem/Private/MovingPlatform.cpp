@@ -36,6 +36,11 @@ void AMovingPlatform::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+void AMovingPlatform::InteractWith()
+{
+	StartMovePlatformTimeline();
+}
+
 float AMovingPlatform::GetScaledPlayRate()
 {
 	float Distance = FVector::Distance(StartLocation, EndLocation);

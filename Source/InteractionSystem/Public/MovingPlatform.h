@@ -4,10 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Interface/InteractionInterface.h"
 #include "MovingPlatform.generated.h"
 
 UCLASS()
-class INTERACTIONSYSTEM_API AMovingPlatform : public AActor
+class INTERACTIONSYSTEM_API AMovingPlatform : public AActor, public IInteractionInterface
 {
 	GENERATED_BODY()
 	
@@ -23,6 +24,12 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	/* IInteractionInterface start */
+	
+	virtual void InteractWith() override;
+	
+	/* IInteractionInterface end */
+	
 	UFUNCTION(BlueprintImplementableEvent)
 	void StartMovePlatformTimeline();
 
