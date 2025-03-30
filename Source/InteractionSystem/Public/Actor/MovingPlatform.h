@@ -7,6 +7,8 @@
 #include "Interface/InteractionInterface.h"
 #include "MovingPlatform.generated.h"
 
+class AInteractButton;
+
 UCLASS()
 class INTERACTIONSYSTEM_API AMovingPlatform : public AActor, public IInteractionInterface
 {
@@ -56,4 +58,7 @@ protected:
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
 	FVector EndLocation = FVector::ZeroVector;
+
+	UPROPERTY(EditInstanceOnly)
+	AInteractButton* ButtonToBind;
 };

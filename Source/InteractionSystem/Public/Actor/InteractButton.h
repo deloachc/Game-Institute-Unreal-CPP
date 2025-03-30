@@ -7,6 +7,8 @@
 #include "Interface/InteractionInterface.h"
 #include "InteractButton.generated.h"
 
+DECLARE_MULTICAST_DELEGATE(FOnButtonPressedSignature)
+
 UCLASS()
 class INTERACTIONSYSTEM_API AInteractButton : public AActor, public IInteractionInterface
 {
@@ -29,6 +31,8 @@ public:
 	virtual void InteractWith() override;
 	
 	/* IInteractionInterface end */
+
+	FOnButtonPressedSignature OnButtonPressedDelegate;
 
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

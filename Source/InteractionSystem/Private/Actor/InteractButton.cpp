@@ -31,5 +31,7 @@ void AInteractButton::InteractWith()
 {
 	FString DebugMessage = FString("InteractWith() triggered on ") + GetHumanReadableName();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, DebugMessage);
+
+	OnButtonPressedDelegate.Broadcast();
 }
 

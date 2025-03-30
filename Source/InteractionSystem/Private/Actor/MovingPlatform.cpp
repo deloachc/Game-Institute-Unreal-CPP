@@ -3,6 +3,8 @@
 
 #include "Actor/MovingPlatform.h"
 
+#include "Actor/InteractButton.h"
+
 // Sets default values
 AMovingPlatform::AMovingPlatform()
 {
@@ -28,6 +30,11 @@ void AMovingPlatform::BeginPlay()
 
 	StartLocation = GetActorLocation();
 	EndLocation = EndLocationComponent->GetComponentLocation();
+
+	if (ButtonToBind)
+	{
+		ButtonToBind->OnButtonPressedDelegate.AddUObject(this, &AMovingPlatform::StartMovePlatformTimeline);
+	}
 }
 
 // Called every frame
