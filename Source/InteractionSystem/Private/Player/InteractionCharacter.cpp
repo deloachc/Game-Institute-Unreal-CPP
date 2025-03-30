@@ -69,17 +69,6 @@ void AInteractionCharacter::Interact()
 	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
 	EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::Type::ForDuration;
 	TArray<FHitResult> TraceHits;
-	
-	/*bool bTraceHit = UKismetSystemLibrary::LineTraceSingle(
-		this,
-		Start,
-		End,
-		TraceChannel,
-		false,
-		ActorsToIgnore,
-		DrawDebugType,
-		Hit,
-		true);*/
 
 	UKismetSystemLibrary::CapsuleTraceMulti(
 		this,
@@ -95,18 +84,21 @@ void AInteractionCharacter::Interact()
 		true
 		);
 
-	
-	
-	/*if (TraceHits.bBlockingHit)
+	for (FHitResult& Hit : TraceHits)
 	{
-		FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
-
-		if (AMovingPlatform* MovingPlatform = Cast<AMovingPlatform>(Hit.GetActor()))
+		if (Hit.bBlockingHit)
 		{
-			MovingPlatform->StartMovePlatformTimeline();
+			FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
+
+			if (AMovingPlatform* MovingPlatform = Cast<AMovingPlatform>(Hit.GetActor()))
+			{
+				MovingPlatform->StartMovePlatformTimeline();
+			}
 		}
-	}*/
+	}
+	
+	
 }
 
 void AInteractionCharacter::Look(const FInputActionValue& Value)
