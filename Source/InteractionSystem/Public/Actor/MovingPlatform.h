@@ -7,7 +7,7 @@
 #include "Interface/InteractionInterface.h"
 #include "MovingPlatform.generated.h"
 
-class AInteractButton;
+class UTriggerableActionComponent;
 
 UCLASS()
 class INTERACTIONSYSTEM_API AMovingPlatform : public AActor, public IInteractionInterface
@@ -48,6 +48,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* EndLocationEditorMesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTriggerableActionComponent* TriggerableActionComponent;
 	
 	// cm/second
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -58,7 +61,5 @@ protected:
 
 	UPROPERTY(VisibleInstanceOnly, BlueprintReadOnly)
 	FVector EndLocation = FVector::ZeroVector;
-
-	UPROPERTY(EditInstanceOnly)
-	AInteractButton* ButtonToBind;
+	
 };

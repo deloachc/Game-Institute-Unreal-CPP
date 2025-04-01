@@ -3,7 +3,7 @@
 
 #include "Actor/MovingPlatform.h"
 
-#include "Actor/InteractButton.h"
+#include "Component/TriggerableActionComponent.h"
 
 // Sets default values
 AMovingPlatform::AMovingPlatform()
@@ -21,6 +21,8 @@ AMovingPlatform::AMovingPlatform()
 	EndLocationEditorMesh->SetupAttachment(EndLocationComponent);
 	EndLocationEditorMesh->SetHiddenInGame(true);
 	EndLocationEditorMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
+
+	TriggerableActionComponent->CreateDefaultSubobject<UTriggerableActionComponent>(TEXT("TriggerableActionComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -31,10 +33,7 @@ void AMovingPlatform::BeginPlay()
 	StartLocation = GetActorLocation();
 	EndLocation = EndLocationComponent->GetComponentLocation();
 
-	if (ButtonToBind)
-	{
-		ButtonToBind->OnButtonPressedDelegate.AddUObject(this, &AMovingPlatform::StartMovePlatformTimeline);
-	}
+	TriggerableActionComponent->OnTriggerActionDelegate.BindUObject(this, &AMovingPlatform::StartMovePlatformTimeline);
 }
 
 // Called every frame
