@@ -3,6 +3,8 @@
 
 #include "Actor/InteractButton.h"
 
+#include "Component/TriggerComponent.h"
+
 
 // Sets default values
 AInteractButton::AInteractButton()
@@ -12,6 +14,8 @@ AInteractButton::AInteractButton()
 
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	SetRootComponent(Mesh);
+
+	TriggerComponent = CreateDefaultSubobject<UTriggerComponent>(TEXT("TriggerComponent"));
 }
 
 // Called when the game starts or when spawned
@@ -32,6 +36,6 @@ void AInteractButton::InteractWith()
 	FString DebugMessage = FString("InteractWith() triggered on ") + GetHumanReadableName();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, DebugMessage);
 
-	OnButtonPressedDelegate.Broadcast();
+	TriggerComponent->ExecuteTriggers();
 }
 

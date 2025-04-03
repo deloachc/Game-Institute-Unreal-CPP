@@ -22,7 +22,7 @@ AMovingPlatform::AMovingPlatform()
 	EndLocationEditorMesh->SetHiddenInGame(true);
 	EndLocationEditorMesh->SetCollisionEnabled(ECollisionEnabled::Type::NoCollision);
 
-	TriggerableActionComponent->CreateDefaultSubobject<UTriggerableActionComponent>(TEXT("TriggerableActionComponent"));
+	TriggerableActionComponent = CreateDefaultSubobject<UTriggerableActionComponent>(TEXT("TriggerableActionComponent"));
 }
 
 // Called when the game starts or when spawned

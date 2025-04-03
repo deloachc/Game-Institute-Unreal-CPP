@@ -7,7 +7,7 @@
 #include "Interface/InteractionInterface.h"
 #include "InteractButton.generated.h"
 
-DECLARE_MULTICAST_DELEGATE(FOnButtonPressedSignature)
+class UTriggerComponent;
 
 UCLASS()
 class INTERACTIONSYSTEM_API AInteractButton : public AActor, public IInteractionInterface
@@ -32,9 +32,10 @@ public:
 	
 	/* IInteractionInterface end */
 
-	FOnButtonPressedSignature OnButtonPressedDelegate;
-
 protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UStaticMeshComponent* Mesh;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UTriggerComponent* TriggerComponent;
 };
