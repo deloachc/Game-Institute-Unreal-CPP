@@ -16,6 +16,7 @@ public:
 	// Sets default values for this component's properties
 	UTriggerComponent();
 
+	UFUNCTION(BlueprintCallable)
 	void ExecuteTriggers();
 
 protected:

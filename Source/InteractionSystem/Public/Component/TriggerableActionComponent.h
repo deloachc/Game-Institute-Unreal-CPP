@@ -6,7 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "TriggerableActionComponent.generated.h"
 
-DECLARE_DELEGATE(FOnTriggerActionSignature)
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnTriggerActionSignature);
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INTERACTIONSYSTEM_API UTriggerableActionComponent : public UActorComponent
@@ -17,6 +17,7 @@ public:
 	// Sets default values for this component's properties
 	UTriggerableActionComponent();
 
+	UPROPERTY(BlueprintAssignable)
 	FOnTriggerActionSignature OnTriggerActionDelegate;
 
 	void TriggerAction();

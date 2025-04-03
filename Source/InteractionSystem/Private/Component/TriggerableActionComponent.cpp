@@ -16,11 +16,5 @@ UTriggerableActionComponent::UTriggerableActionComponent()
 
 void UTriggerableActionComponent::TriggerAction()
 {
-	if (!OnTriggerActionDelegate.IsBound())
-	{
-		FString DebugString = FString("OnTriggerAction not bound on Owner: ") + GetOwner()->GetHumanReadableName();
-		GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Yellow, DebugString);
-	}
-	
-	OnTriggerActionDelegate.ExecuteIfBound();
+	OnTriggerActionDelegate.Broadcast();
 }

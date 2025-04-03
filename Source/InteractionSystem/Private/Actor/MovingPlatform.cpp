@@ -33,7 +33,7 @@ void AMovingPlatform::BeginPlay()
 	StartLocation = GetActorLocation();
 	EndLocation = EndLocationComponent->GetComponentLocation();
 
-	TriggerableActionComponent->OnTriggerActionDelegate.BindUObject(this, &AMovingPlatform::StartMovePlatformTimeline);
+	TriggerableActionComponent->OnTriggerActionDelegate.AddDynamic(this, &AMovingPlatform::StartMovePlatformTimeline);
 }
 
 // Called every frame
