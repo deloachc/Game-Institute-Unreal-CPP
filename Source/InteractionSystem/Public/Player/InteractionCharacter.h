@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "InteractionCharacter.generated.h"
 
+class UInteractorComponent;
 struct FInputActionValue;
 class UCameraComponent;
 class USpringArmComponent;
@@ -41,6 +42,9 @@ protected:
 	UCameraComponent* Camera;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInteractorComponent* InteractorComponent;
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UInputMappingContext* DefaultMappingContext;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -57,16 +61,4 @@ protected:
 	UInputAction* MoveAction;
 
 	void Move(const FInputActionValue& Value);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
-	float TraceStartOffset = 40.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
-	float TraceEndOffset = 50.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
-	float TraceRadius = 40.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
-	float TraceHalfHeight = 90.f;
 };

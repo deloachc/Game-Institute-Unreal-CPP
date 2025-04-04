@@ -8,6 +8,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "EnhancedInputComponent.h"
 #include "Actor/MovingPlatform.h"
+#include "Component/InteractorComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
@@ -23,6 +24,8 @@ AInteractionCharacter::AInteractionCharacter()
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	Camera->SetupAttachment(SpringArm);
+
+	InteractorComponent = CreateDefaultSubobject<UInteractorComponent>(TEXT("InteractorComponent"));
 
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationPitch = false;
@@ -61,44 +64,7 @@ void AInteractionCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInp
 
 void AInteractionCharacter::Interact()
 {
-	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, FString("Interact triggered"));
-
-	const FVector Start = GetActorLocation() + (GetActorForwardVector() * TraceStartOffset);
-	const FVector End = Start + (GetActorForwardVector() * TraceEndOffset);
-	ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
-	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
-	EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::Type::ForDuration;
-	TArray<FHitResult> TraceHits;
-
-	UKismetSystemLibrary::CapsuleTraceMulti(
-		this,
-		Start,
-		End,
-		TraceRadius,
-		TraceHalfHeight,
-		TraceChannel,
-		false,
-		ActorsToIgnore,
-		DrawDebugType,
-		TraceHits,
-		true
-		);
-
-	for (FHitResult& Hit : TraceHits)
-	{
-		if (Hit.bBlockingHit)
-		{
-			FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
-
-			if (IInteractionInterface* InteractableObject = Cast<IInteractionInterface>(Hit.GetActor()))
-			{
-				InteractableObject->InteractWith();
-			}
-		}
-	}
-	
-	
+	InteractorComponent->ExecuteInteractions();
 }
 
 void AInteractionCharacter::Look(const FInputActionValue& Value)

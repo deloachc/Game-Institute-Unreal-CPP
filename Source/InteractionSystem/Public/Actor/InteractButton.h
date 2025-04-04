@@ -7,6 +7,7 @@
 #include "Interface/InteractionInterface.h"
 #include "InteractButton.generated.h"
 
+class UInteractionComponent;
 class UTriggerComponent;
 
 UCLASS()
@@ -21,6 +22,9 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	UFUNCTION()
+	void ExecuteTriggers();
 
 public:
 	// Called every frame
@@ -38,4 +42,7 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	UTriggerComponent* TriggerComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	UInteractionComponent* InteractionComponent;
 };
