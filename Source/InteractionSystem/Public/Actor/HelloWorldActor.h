@@ -27,26 +27,11 @@ public:
 	void PrintHelloWorldToLog();
 
 	int32 AddTwoIntegers(int32 A, int32 B);
-
-	void CompareTwoFloats(float A, float B);
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 ClassInteger = 2;
+	// Variables declared in the header file can be accessed from any function within the class
+	int32 ClassInteger = 0;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	bool bClassBool = false;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float ClassFloatA = 2.5f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	float ClassFloatB = 5.f;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FVector ClassVector = FVector(1.f, 2.f, 3.f);
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FRotator ClassRotator = FRotator(90.f, 120.f, 200.f);
 
 	void CompareClassIntegerToInput(int32 Input);
 
