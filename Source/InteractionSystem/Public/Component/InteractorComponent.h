@@ -7,6 +7,8 @@
 #include "InteractorComponent.generated.h"
 
 
+class UInteractionComponent;
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INTERACTIONSYSTEM_API UInteractorComponent : public UActorComponent
 {
@@ -39,4 +41,10 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	float TraceHalfHeight = 90.f;
+
+protected:
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UInteractionComponent* ClosestInteractable;
+	
 };
