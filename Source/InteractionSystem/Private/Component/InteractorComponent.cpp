@@ -28,17 +28,22 @@ void UInteractorComponent::BeginPlay()
 }
 
 
-// Called every frame
-void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                         FActorComponentTickFunction* ThisTickFunction)
+void UInteractorComponent::DrawDebugSphereForInteractable()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (ClosestInteractable && bDrawDebugShapes)
+	{
+		DrawDebugSphere(GetWorld(), ClosestInteractable->GetOwner()->GetActorLocation(), 30.f, 12, FColor::Green);
+	}
+}
 
+void UInteractorComponent::CapsuleTrace()
+{
 	const FVector Start = GetOwner()->GetActorLocation() + GetOwner()->GetActorForwardVector() * TraceStartOffset;
 	const FVector End = Start + GetOwner()->GetActorForwardVector() * TraceEndOffset;
 	const ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
 	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
-	const EDrawDebugTrace::Type DrawDebugType = EDrawDebugTrace::Type::None;
+	// Ternary Operator: bCondition ? IfTrue : IfFalse
+	const EDrawDebugTrace::Type DrawDebugType = bDrawDebugShapes ? EDrawDebugTrace::Type::ForOneFrame : EDrawDebugTrace::Type::None;
 	TArray<FHitResult> TraceHits;
 
 	UKismetSystemLibrary::CapsuleTraceMulti(
@@ -53,7 +58,7 @@ void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		DrawDebugType,
 		TraceHits,
 		true
-		);
+	);
 
 	UInteractionComponent* ReturnClosestInteractable = nullptr;
 	
@@ -86,11 +91,65 @@ void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	}
 
 	ClosestInteractable = ReturnClosestInteractable;
+}
 
-	if (ClosestInteractable)
+void UInteractorComponent::LineTraceFromCamera()
+{
+	APawn* OwningPawn = Cast<APawn>(GetOwner());
+	APlayerController* PlayerController = Cast<APlayerController>(OwningPawn->Controller);
+	FVector2D ViewportSize = FVector2D::ZeroVector;
+	GEngine->GameViewport->GetViewportSize(ViewportSize);
+	FVector WorldLocation = FVector::ZeroVector;
+	FVector WorldDirection = FVector::ZeroVector;
+	PlayerController->DeprojectScreenPositionToWorld(ViewportSize.X/2.f, ViewportSize.Y/2.f, WorldLocation, WorldDirection);
+	
+	const FVector Start = WorldLocation + WorldDirection * TraceStartOffset;
+	const FVector End = Start + WorldDirection * TraceEndOffset;
+	const ETraceTypeQuery TraceChannel = UEngineTypes::ConvertToTraceType(ECollisionChannel::ECC_Visibility);
+	const TArray<AActor*> ActorsToIgnore = TArray<AActor*>();
+	// Ternary Operator: bCondition ? IfTrue : IfFalse
+	const EDrawDebugTrace::Type DrawDebugType = bDrawDebugShapes ? EDrawDebugTrace::Type::ForOneFrame : EDrawDebugTrace::Type::None;
+	FHitResult TraceHit;
+
+	UKismetSystemLibrary::LineTraceSingle(
+		this,
+		Start,
+		End,
+		TraceChannel,
+		false,
+		ActorsToIgnore,
+		DrawDebugType,
+		TraceHit,
+		true
+	);
+
+	if (TraceHit.bBlockingHit)
 	{
-		DrawDebugSphere(GetWorld(), ClosestInteractable->GetOwner()->GetActorLocation(), 30.f, 12, FColor::Green);
+		UInteractionComponent* InteractionComponent = TraceHit.GetActor()->FindComponentByClass<UInteractionComponent>();
+		if (InteractionComponent)
+		{
+			ClosestInteractable = InteractionComponent;
+		}
+		else
+		{
+			ClosestInteractable = nullptr;
+		}
 	}
+	else
+	{
+		ClosestInteractable = nullptr;
+	}
+}
+
+// Called every frame
+void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                         FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	LineTraceFromCamera();
+
+	DrawDebugSphereForInteractable();
 }
 
 void UInteractorComponent::ExecuteInteractions()

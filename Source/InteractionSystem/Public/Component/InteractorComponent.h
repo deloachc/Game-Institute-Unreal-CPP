@@ -21,6 +21,11 @@ public:
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
+	void DrawDebugSphereForInteractable();
+
+	void CapsuleTrace();
+
+	void LineTraceFromCamera();
 
 public:
 	// Called every frame
@@ -41,6 +46,9 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	float TraceHalfHeight = 90.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	bool bDrawDebugShapes = false;
 
 protected:
 
