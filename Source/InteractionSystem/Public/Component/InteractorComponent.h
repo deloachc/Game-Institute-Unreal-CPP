@@ -6,8 +6,14 @@
 #include "Components/ActorComponent.h"
 #include "InteractorComponent.generated.h"
 
-
 class UInteractionComponent;
+
+UENUM(BlueprintType)
+enum class EInteractionTraceType : uint8
+{
+	EITT_CapsuleTrace UMETA(DisplayName = "Capsule Trace"),
+	EITT_LineTrace UMETA(DisplayName = "Line Trace")
+};
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class INTERACTIONSYSTEM_API UInteractorComponent : public UActorComponent
@@ -35,6 +41,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void ExecuteInteractions();
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	EInteractionTraceType InteractionTraceType = EInteractionTraceType::EITT_CapsuleTrace;
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	float TraceStartOffset = 40.f;
 

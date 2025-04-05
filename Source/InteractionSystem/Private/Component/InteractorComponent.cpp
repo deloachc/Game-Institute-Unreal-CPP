@@ -147,7 +147,17 @@ void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	LineTraceFromCamera();
+	switch (InteractionTraceType)
+	{
+	case EInteractionTraceType::EITT_CapsuleTrace:
+		CapsuleTrace();
+		break;
+	case EInteractionTraceType::EITT_LineTrace:
+		LineTraceFromCamera();
+		break;
+	default:
+		CapsuleTrace();
+	}
 
 	DrawDebugSphereForInteractable();
 }
