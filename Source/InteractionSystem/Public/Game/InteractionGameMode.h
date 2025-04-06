@@ -6,9 +6,8 @@
 #include "GameFramework/GameModeBase.h"
 #include "InteractionGameMode.generated.h"
 
-/**
- * 
- */
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnCollectablesUpdatedSignature, int32, NumCollectablesRemaining);
+
 UCLASS()
 class INTERACTIONSYSTEM_API AInteractionGameMode : public AGameModeBase
 {
@@ -20,7 +19,13 @@ public:
 
 	void RemoveCollectable(AActor* Collectable);
 
+	UFUNCTION(BlueprintPure)
 	int32 GetNumberCollectablesRemaining() const;
+
+	void UpdateCollectablesRemaining() const;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnCollectablesUpdatedSignature OnCollectablesUpdatedDelegate;
 	
 	
 protected:
