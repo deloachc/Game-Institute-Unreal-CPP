@@ -3,3 +3,20 @@
 
 #include "Game/InteractionGameMode.h"
 
+void AInteractionGameMode::AddCollectable(AActor* Collectable)
+{
+	Collectables.AddUnique(Collectable);
+}
+
+void AInteractionGameMode::RemoveCollectable(AActor* Collectable)
+{
+	Collectables.Remove(Collectable);
+
+	FString DebugString = FString::FromInt(GetNumberCollectablesRemaining()) + FString(" Collectables Remaining");
+	GEngine->AddOnScreenDebugMessage(1, 60.f, FColor::Emerald, DebugString);
+}
+
+int32 AInteractionGameMode::GetNumberCollectablesRemaining() const
+{
+	return Collectables.Num();
+}

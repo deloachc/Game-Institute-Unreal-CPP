@@ -13,5 +13,18 @@ UCLASS()
 class INTERACTIONSYSTEM_API AInteractionGameMode : public AGameModeBase
 {
 	GENERATED_BODY()
+
+public:
+
+	void AddCollectable(AActor* Collectable);
+
+	void RemoveCollectable(AActor* Collectable);
+
+	int32 GetNumberCollectablesRemaining() const;
 	
+	
+protected:
+
+	UPROPERTY()
+	TArray<AActor*> Collectables;
 };

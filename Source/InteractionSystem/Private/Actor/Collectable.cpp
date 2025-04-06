@@ -3,7 +3,10 @@
 
 #include "Actor/Collectable.h"
 
+#include "InteractionFunctionLibrary.h"
 #include "Components/SphereComponent.h"
+#include "Game/InteractionGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 ACollectable::ACollectable()
@@ -28,6 +31,8 @@ void ACollectable::BeginPlay()
 	Super::BeginPlay();
 
 	SphereCollider->OnComponentBeginOverlap.AddDynamic(this, &ACollectable::OnSphereBeginOverlap);
+
+	UInteractionFunctionLibrary::GetInteractionGameMode(this)->AddCollectable(this);
 }
 
 void ACollectable::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
@@ -36,5 +41,7 @@ void ACollectable::OnSphereBeginOverlap(UPrimitiveComponent* OverlappedComponent
 	FString DebugString = GetHumanReadableName() + FString(" Collected");
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Orange, DebugString);
 
+	UInteractionFunctionLibrary::GetInteractionGameMode(this)->RemoveCollectable(this);
+	
 	Destroy();
 }
