@@ -21,4 +21,7 @@ public:
 	FOnInteractionSignature OnInteractionDelegate;
 
 	void DoInteraction();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString PromptString = FString("Interact");
 };

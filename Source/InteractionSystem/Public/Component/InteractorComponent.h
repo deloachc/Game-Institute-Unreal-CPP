@@ -6,7 +6,6 @@
 #include "Components/ActorComponent.h"
 #include "InteractorComponent.generated.h"
 
-class UInteractionPromptWidget;
 class UInteractionComponent;
 
 UENUM(BlueprintType)
@@ -64,5 +63,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UInteractionComponent* ClosestInteractable;
-	
 };
