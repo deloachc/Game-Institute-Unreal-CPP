@@ -4,6 +4,7 @@
 #include "Component/InteractorComponent.h"
 
 #include "Component/InteractionComponent.h"
+#include "Component/InteractionPromptWidgetComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
 
 
@@ -23,7 +24,14 @@ void UInteractorComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
+	if (PromptWidgetComponentClass)
+	{
+		PromptWidgetComponent = NewObject<UInteractionPromptWidgetComponent>(GetOwner(), PromptWidgetComponentClass);
+		PromptWidgetComponent->RegisterComponent();
+		PromptWidgetComponent->AttachToComponent(GetOwner()->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
+	}
+	
+	PromptWidgetComponent->SetVisibility(true);
 	
 }
 
@@ -66,8 +74,8 @@ void UInteractorComponent::CapsuleTrace()
 	{
 		if (Hit.bBlockingHit)
 		{
-			FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
+			//FString ActorHitName = Hit.GetActor()->GetHumanReadableName();
+			//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Magenta, ActorHitName);
 
 			UInteractionComponent* InteractionComponent = Hit.GetActor()->FindComponentByClass<UInteractionComponent>();
 			if (InteractionComponent)
@@ -146,7 +154,7 @@ void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
                                          FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
+	
 	switch (InteractionTraceType)
 	{
 	case EInteractionTraceType::EITT_CapsuleTrace:
@@ -159,7 +167,19 @@ void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 		CapsuleTrace();
 	}
 
+	if (ClosestInteractable && PromptWidgetComponent)
+	{
+		PromptWidgetComponent->SetWorldLocation(ClosestInteractable->GetOwner()->GetActorLocation() + PromptWidgetOffset);
+		PromptWidgetComponent->UpdatePromptText(ClosestInteractable->PromptString);
+		PromptWidgetComponent->SetVisibility(true);
+	}
+	else if (!ClosestInteractable && PromptWidgetComponent)
+	{
+		PromptWidgetComponent->SetVisibility(false);
+	}
+	
 	DrawDebugSphereForInteractable();
+	
 }
 
 void UInteractorComponent::ExecuteInteractions()

@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "InteractorComponent.generated.h"
 
+class UInteractionPromptWidgetComponent;
 class UInteractionComponent;
 
 UENUM(BlueprintType)
@@ -58,6 +59,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
 	bool bDrawDebugShapes = false;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	TSubclassOf<UInteractionPromptWidgetComponent> PromptWidgetComponentClass;
+
+	UPROPERTY()
+	UInteractionPromptWidgetComponent* PromptWidgetComponent;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interaction")
+	FVector PromptWidgetOffset = FVector(0.f, 0.f, 50.f);
 
 protected:
 
