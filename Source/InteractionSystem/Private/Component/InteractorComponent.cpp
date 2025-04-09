@@ -30,9 +30,6 @@ void UInteractorComponent::BeginPlay()
 		PromptWidgetComponent->RegisterComponent();
 		PromptWidgetComponent->AttachToComponent(GetOwner()->GetRootComponent(), FAttachmentTransformRules::SnapToTargetIncludingScale);
 	}
-	
-	PromptWidgetComponent->SetVisibility(true);
-	
 }
 
 
@@ -149,11 +146,29 @@ void UInteractorComponent::LineTraceFromCamera()
 	}
 }
 
-// Called every frame
-void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-                                         FActorComponentTickFunction* ThisTickFunction)
+void UInteractorComponent::UpdatePromptWidget()
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	if (PromptWidgetComponent == nullptr) return;
+	
+	if (ClosestInteractable)
+	{
+		PromptWidgetComponent->SetWorldLocation(ClosestInteractable->GetOwner()->GetActorLocation() + PromptWidgetOffset);
+
+		if (ClosestInteractable != ClosestInteractableLastFrame)
+		{
+			PromptWidgetComponent->UpdatePromptText(ClosestInteractable->PromptString);
+			PromptWidgetComponent->SetVisibility(true);
+		}
+	}
+	else if (!ClosestInteractable && PromptWidgetComponent->GetVisibleFlag())
+	{
+		PromptWidgetComponent->SetVisibility(false);
+	}
+}
+
+void UInteractorComponent::UpdateClosestInteractable()
+{
+	ClosestInteractableLastFrame = ClosestInteractable;
 	
 	switch (InteractionTraceType)
 	{
@@ -166,17 +181,17 @@ void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	default:
 		CapsuleTrace();
 	}
+}
 
-	if (ClosestInteractable && PromptWidgetComponent)
-	{
-		PromptWidgetComponent->SetWorldLocation(ClosestInteractable->GetOwner()->GetActorLocation() + PromptWidgetOffset);
-		PromptWidgetComponent->UpdatePromptText(ClosestInteractable->PromptString);
-		PromptWidgetComponent->SetVisibility(true);
-	}
-	else if (!ClosestInteractable && PromptWidgetComponent)
-	{
-		PromptWidgetComponent->SetVisibility(false);
-	}
+// Called every frame
+void UInteractorComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                         FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	UpdateClosestInteractable();
+
+	UpdatePromptWidget();
 	
 	DrawDebugSphereForInteractable();
 	

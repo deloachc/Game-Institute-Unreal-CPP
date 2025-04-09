@@ -33,6 +33,9 @@ protected:
 	void CapsuleTrace();
 
 	void LineTraceFromCamera();
+	
+	void UpdatePromptWidget();
+	void UpdateClosestInteractable();
 
 public:
 	// Called every frame
@@ -73,4 +76,7 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UInteractionComponent* ClosestInteractable;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UInteractionComponent* ClosestInteractableLastFrame;
 };
